@@ -18,6 +18,9 @@ public class Content {
     private String textfieldHintText = "Folder Name";
     private String textfieldErrorText = "Empty Folder Name";
 
+    private String sd1StorageText = "SD 1";
+    private String sd2StorageText = "SD 2";
+    private String usbStorageText = "USB";
 
     public String getSelectLabel() {
         return selectLabel;
@@ -105,5 +108,29 @@ public class Content {
 
     public void setTextfieldErrorText(String textfieldErrorText) {
         this.textfieldErrorText = textfieldErrorText;
+    }
+
+    public String getSd1StorageText() {
+        return sd1StorageText;
+    }
+
+    public void setSd1StorageText(String sd1StorageText) {
+        this.sd1StorageText = sd1StorageText;
+    }
+
+    public String getSd2StorageText() {
+        return sd2StorageText;
+    }
+
+    public void setSd2StorageText(String sd2StorageText) {
+        this.sd2StorageText = sd2StorageText;
+    }
+
+    public String getUsbStorageText() {
+        return usbStorageText;
+    }
+
+    public void setUsbStorageText(String usbStorageText) {
+        this.usbStorageText = usbStorageText;
     }
 }

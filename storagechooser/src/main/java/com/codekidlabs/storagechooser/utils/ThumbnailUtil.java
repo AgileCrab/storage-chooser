@@ -14,6 +14,7 @@ public class ThumbnailUtil {
     private static final String LOG_FILE = "log";
     private static final String CSV_FILE = "csv";
     private static final String PROP_FILE = "prop";
+    private static final String KML = "kml";
     // video files
     private static final String VIDEO_FILE = "mp4";
     private static final String VIDEO_MOV_FILE = "mov";
@@ -108,6 +109,12 @@ public class ThumbnailUtil {
                 break;
             case PDF_FILE:
                 imageView.setImageDrawable(getDrawableFromRes(R.drawable.pdf));
+                break;
+            case KML:
+                imageView.setImageDrawable(getDrawableFromRes(R.drawable.ic_file_kml));
+                break;
+            default:
+                imageView.setImageDrawable(getDrawableFromRes(R.drawable.doc));
                 break;
         }
     }

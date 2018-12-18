@@ -7,8 +7,6 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -59,7 +57,6 @@ public class ChooserDialogFragment extends android.app.DialogFragment {
     // delaying secondary chooser
     private Handler mHandler;
 
-    @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -89,7 +86,7 @@ public class ChooserDialogFragment extends android.app.DialogFragment {
             dialogTitle.setText(mContent.getOverviewHeading());
 
             // set heading typeface
-            if(mConfig.getHeadingFont() != null) {
+            if (mConfig.getHeadingFont() != null) {
                 dialogTitle.setTypeface(getSCTypeface(getActivity().getApplicationContext(),
                         mConfig.getHeadingFont(),
                         mConfig.isHeadingFromAssets()));
@@ -131,19 +128,7 @@ public class ChooserDialogFragment extends android.app.DialogFragment {
                         if (mConfig.isApplyThreshold()) {
                             startThresholdTest(i);
                         } else {
-
-                            if (BUILD_DEBUG) {
-                                mHandler.postDelayed(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        DiskUtil.showSecondaryChooser(dirPath, mConfig);
-                                    }
-                                }, 250);
-                            } else {
-                                DiskUtil.showSecondaryChooser(dirPath, mConfig);
-                            }
-
-
+                            DiskUtil.showSecondaryChooser(dirPath, mConfig);
                         }
                     } else {
                         if (mConfig.isActionSave()) {
@@ -220,7 +205,8 @@ public class ChooserDialogFragment extends android.app.DialogFragment {
         if (i == 0) {
             return Environment.getExternalStorageDirectory().getAbsolutePath();
         } else {
-            return "/storage/" + storagesList.get(i).getStorageTitle();
+//            return "/storage/" + storagesList.get(i).getStorageTitle();
+            return storagesList.get(i).getStoragePath();
         }
     }
 
@@ -274,6 +260,33 @@ public class ChooserDialogFragment extends android.app.DialogFragment {
             }
         }
 
+        if (DiskUtil.isSdCard1Exist()) {
+            Storages sd1Storage = new Storages();
+            sd1Storage.setStorageTitle(mContent.getSd1StorageText());
+            sd1Storage.setStoragePath(DiskUtil.getSdCard1Path());
+            sd1Storage.setMemoryTotalSize(memoryUtil.formatSize(memoryUtil.getTotalMemorySize(DiskUtil.getSdCard1Path())));
+            sd1Storage.setMemoryAvailableSize(memoryUtil.formatSize(memoryUtil.getAvailableMemorySize(DiskUtil.getSdCard1Path())));
+            storagesList.add(sd1Storage);
+        }
+
+        if (DiskUtil.isSdCard2Exist()) {
+            Storages sd2Storage = new Storages();
+            sd2Storage.setStorageTitle(mContent.getSd2StorageText());
+            sd2Storage.setStoragePath(DiskUtil.getSdCard2Path());
+            sd2Storage.setMemoryTotalSize(memoryUtil.formatSize(memoryUtil.getTotalMemorySize(DiskUtil.getSdCard2Path())));
+            sd2Storage.setMemoryAvailableSize(memoryUtil.formatSize(memoryUtil.getAvailableMemorySize(DiskUtil.getSdCard2Path())));
+            storagesList.add(sd2Storage);
+        }
+
+        if (DiskUtil.isUsbExist()) {
+            Storages usbStorage = new Storages();
+            usbStorage.setStorageTitle(mContent.getUsbStorageText());
+            usbStorage.setStoragePath(DiskUtil.getUSBPath());
+            usbStorage.setMemoryTotalSize(memoryUtil.formatSize(memoryUtil.getTotalMemorySize(DiskUtil.getUSBPath())));
+            usbStorage.setMemoryAvailableSize(memoryUtil.formatSize(memoryUtil.getAvailableMemorySize(DiskUtil.getUSBPath())));
+            storagesList.add(usbStorage);
+        }
+
     }
 
     // Convinience methods
@@ -292,7 +305,6 @@ public class ChooserDialogFragment extends android.app.DialogFragment {
         StorageChooser.onCancelListener.onCancel();
     }
 
-    @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         Dialog d = StorageChooser.dialog;
